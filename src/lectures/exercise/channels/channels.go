@@ -14,9 +14,11 @@
 
 package main
 
-import "fmt"
-import "time"
-import "math/rand"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
 type Job int
 
@@ -38,4 +40,15 @@ func makeJobs() []Job {
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	jobs := makeJobs()
+	sum := 0
+	results := make(chan int, len(jobs))
+	for i := 0; i < len(jobs); i++ {
+		go func(i int) {
+			results <- longCalculation(jobs[i])
+		}(i)
+	}
+	for i := 0; i < len(jobs); i++ {
+		sum += <-results
+	}
+	fmt.Printf("Total sum of all jobs: %d\n", sum)
 }
