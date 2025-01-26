@@ -49,5 +49,27 @@ func main() {
 	// The day and role. Change these to check your work.
 	today, role := Tuesday, Guest
 
-	accessGranted()
+	conditions := map[int][]int{
+		Admin:      {10},
+		Manager:    {10},
+		Contractor: {5, 6},
+		Member:     {0, 1, 2, 3, 4},
+		Guest:      {0, 2, 4},
+	}
+	granted := false
+
+	for user_role, days := range conditions {
+		if user_role == role {
+			for _, day := range days {
+				if day == 10 || today == day {
+					accessGranted()
+					granted = true
+					break
+				}
+			}
+		}
+	}
+	if !granted {
+		accessDenied()
+	}
 }
