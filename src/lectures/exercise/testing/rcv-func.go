@@ -1,0 +1,55 @@
+package main
+
+import "fmt"
+
+type Health struct {
+	CurrentHealth int
+	MaxHealth     int
+}
+
+type Energy struct {
+	CurrentEnergy int
+	MaxEnergy     int
+}
+
+type Player struct {
+	Name   string
+	Health Health
+	Energy Energy
+}
+
+func (p *Player) Heal(value int) {
+	new_health := p.Health.CurrentHealth + value
+	if new_health < 0 {
+		p.Health.CurrentHealth = 0
+	} else if new_health > p.Health.MaxHealth {
+		p.Health.CurrentHealth = p.Health.MaxHealth
+	} else {
+		p.Health.CurrentHealth = new_health
+	}
+}
+
+func (p *Player) Rest(value int) {
+	new_energy := p.Energy.CurrentEnergy + value
+	if new_energy < 0 {
+		p.Energy.CurrentEnergy = 0
+	} else if new_energy > p.Energy.MaxEnergy {
+		p.Energy.CurrentEnergy = p.Energy.MaxEnergy
+	} else {
+		p.Energy.CurrentEnergy = new_energy
+	}
+}
+
+var p = fmt.Printf
+
+func main() {
+	player := Player{"Zakaria", Health{50, 150}, Energy{100, 150}}
+
+	p("old Health: %v\n", player.Health.CurrentHealth)
+	player.Heal(50)
+	p("new Health: %v\n", player.Health.CurrentHealth)
+
+	p("old Energy: %v\n", player.Energy.CurrentEnergy)
+	player.Rest(100)
+	p("new Energy: %v\n", player.Energy.CurrentEnergy)
+}
