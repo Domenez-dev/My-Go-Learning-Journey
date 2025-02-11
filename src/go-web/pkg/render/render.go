@@ -1,15 +1,25 @@
 package render
 
 import (
-	"fmt"
-	"html/template"
+	"log"
 	"net/http"
+
+	"github.com/CloudyKit/jet/v6"
 )
 
-func RenderTemplate(w http.ResponseWriter, tmp string) {
-	ParsedTemplate, _ := template.ParseFiles("./templates/" + tmp)
-	err := ParsedTemplate.Execute(w, nil)
+var views = jet.NewSet(
+	jet.NewOSFileSystemLoader("/templates"),
+	jet.InDevelopmentMode(),
+)
+
+func RenderTemplate(w http.ResponseWriter, tmp string, data jet.VarMap) {
+	view, err := views.GetTemplate(tmp)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
+	}
+
+	err = view.Execute(w, data, nil)
+	if err != nil {
+		log.Fatal(err)
 	}
 }

@@ -19,3 +19,8 @@ func main() {
 		fmt.Println(err)
 	}
 }
+
+if sleep == nil {
+    fmt.Println("Warning: Low battery, go to Sleep.")
+    panic("System shutting down...")
+}

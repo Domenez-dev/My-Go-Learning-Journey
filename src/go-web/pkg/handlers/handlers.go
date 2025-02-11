@@ -7,7 +7,12 @@ import (
 )
 
 func Home(context string) http.HandlerFunc {
+	stringMap := make(map[string]string)
+	stringMap["test"] = "Hello web!"
+
 	return func(w http.ResponseWriter, r *http.Request) {
-		render.RenderTemplate(w, context)
+		render.RenderTemplate(w, context, &render.TemplateData{
+			StringMap: stringMap,
+		})
 	}
 }
